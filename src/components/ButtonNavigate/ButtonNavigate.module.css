@@ -1,0 +1,13 @@
+.btn-crud {
+    padding: 7px 12px;
+    font-size: 15px;
+    font-weight: 300;
+    background-color: transparent;
+    border: 1px solid greenyellow;
+    color: greenyellow;
+    border-radius: 10px; 
+}
+
+.btn-crud:hover {
+    box-shadow: 0px 0px 5px greenyellow
+}

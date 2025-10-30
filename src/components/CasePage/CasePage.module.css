@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+}
+
+.case-page {
+    display: flex;
+    flex-direction: column;
+    gap: 50px
+}
+
+.content-case-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.description {
+  font-weight: 100;
+}
+
+.checkbox {
+  display: flex;
+  gap: 10px;
+}
+
+.data-time {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  float: right;
+  align-items: end;
+}
+
+.data-create {
+  padding-left: 20px;
+  color: greenyellow;
+}
+
+.data-deadline {
+  padding-left: 20px;
+  color: crimson;
+}
+
+.CRUD-btn {
+    display: flex;
+    gap: 20px;
+}

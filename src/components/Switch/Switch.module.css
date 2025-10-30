@@ -1,0 +1,79 @@
+
+
+
+/* Скрываем стандартный чекбокс */
+.custom-switch {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Контейнер для кастомного свитча */
+.switch-container {
+  display: inline-block;
+  position: relative;
+  padding-left: 60px; /* Больше места для свитча */
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
+  line-height: 30px;
+}
+
+/* Кастомный свитч - ползунок */
+.switch-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30px;
+  width: 50px;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Круглый бегунок */
+.switch-slider:before {
+  content: "";
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Ховер эффект */
+.switch-container:hover .switch-slider {
+  background-color: #b8b8b8;
+}
+
+/* Когда свитч включен */
+.custom-switch:checked + .switch-slider {
+  background-color: #2196F3;
+}
+
+/* Перемещаем бегунок когда включено */
+.custom-switch:checked + .switch-slider:before {
+  transform: translateX(20px);
+}
+
+/* Focus состояние для доступности */
+.custom-switch:focus + .switch-slider {
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.3);
+}
+
+/* Отключенное состояние */
+.custom-switch:disabled + .switch-slider {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.custom-switch:disabled:checked + .switch-slider {
+  background-color: #90caf9;
+}

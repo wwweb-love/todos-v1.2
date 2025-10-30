@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.case {
+    padding: 15px 20px;
+    /* border: 1px solid #ffffff; */
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid transparent;
+}
+
+.case:hover {
+    border: 1px solid tomato;
+}
+
+.navlink {
+    color: white;
+    text-decoration: none;
+}
