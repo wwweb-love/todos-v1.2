@@ -1,13 +1,14 @@
 import styles from "./CaseList.module.css";
 import { Case } from "../Case/Case";
-import { useMatch } from "react-router-dom";
+import { use } from "react";
+import { TodosContext, LoadingContext } from "../../context";
 
-
-export const CaseList = ({ todos, loading, setIndexCase }) => {
-
-    const match = useMatch("/case/:id") || null;
+export const CaseList = () => {
+    const todos = use(TodosContext);
+    const loading = use(LoadingContext);
 
     if (!loading) {
+
         return (
             <div className={styles["case-list"]}>
                 {todos.map(({ id, title, dataCreate }, index) => (
@@ -16,8 +17,7 @@ export const CaseList = ({ todos, loading, setIndexCase }) => {
                         title={title}
                         dataCreate={dataCreate}
                         id={id}
-                        index={index}
-                        setIndexCase={setIndexCase}
+                        indexx={index}
                     />
                 ))}
             </div>

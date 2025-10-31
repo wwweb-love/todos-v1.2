@@ -4,28 +4,12 @@ import { CaseList } from "../CaseList/CaseList";
 import styles from "./MainPage.module.css";
 import { Outlet } from "react-router-dom";
 
-export const MainPage = ({
-    refresh,
-    todos,
-    loading,
-    setIndexCase,
-    showModal,
-    setShowModal,
-}) => {
+export const MainPage = () => {
     return (
         <div className={styles["main-page"]}>
-            <HeadCaseList
-                refresh={refresh}
-                showModal={showModal}
-                setShowModal={setShowModal}
-                todos={todos}
-            />
+            <HeadCaseList />
             <SearchCase />
-            <CaseList
-                todos={todos}
-                loading={loading}
-                setIndexCase={setIndexCase}
-            />
+            <CaseList />
             <Outlet />
         </div>
     );

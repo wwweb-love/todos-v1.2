@@ -5,15 +5,15 @@ import {
     formatDateDeadline,
 } from "../../hooks/useGetFormatData/use-get-format-data";
 import { ModalCase } from "../ModalCase/ModalCase";
-import { usePostRequest } from "../../hooks/useCRUD/use-request-post";
+import { use } from "react";
+import { ShowModalContext } from "../../context";
 
-export const HeadCaseList = ({
-    refresh,
-    showModal,
-    setShowModal,
-    todos
-}) => {
-    let data ={
+export const HeadCaseList = () => {
+    const [ showModal, dispatchShowModal ] = use(ShowModalContext)
+
+
+
+    let data = {
         title: "",
         description: "",
         dataCreate: "",
@@ -22,19 +22,19 @@ export const HeadCaseList = ({
     };
 
     const handleClickAddTodos = () => {
-        setShowModal(!showModal);
+        dispatchShowModal({ type: "SET_SHOW_MODAL_OPEN", payload: true });
     };
 
     return (
         <div className={styles["head-case"]}>
             <h1>Список дел</h1>
             <ButtonCRUD onClick={handleClickAddTodos}>Добавить</ButtonCRUD>
-            <ButtonCRUD onClick={() => alert("В процессе разработки")}>Сортировать</ButtonCRUD>
+            <ButtonCRUD onClick={() => alert("В процессе разработки")}>
+                Сортировать
+            </ButtonCRUD>
 
             {showModal && (
                 <ModalCase
-                    refresh={refresh}
-                    setShowModal={setShowModal}
                     data={{
                         ...data,
                         dateCreate: formatDate(),

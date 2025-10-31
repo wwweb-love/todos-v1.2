@@ -1,7 +1,7 @@
 // Directory
 import styles from "./App.module.css";
 import { Route, Routes } from "react-router-dom";
-import { useState } from "react";
+import { useState, useReducer } from "react";
 
 // Routes
 import { NotFound } from "./components/NotFound/NotFound";
@@ -11,18 +11,59 @@ import { MainPage } from "./components/MainPage/MainPage";
 import { CasePage } from "./components/CasePage/CasePage";
 import { useGetRequest } from "./hooks/useCRUD/use-request-get";
 
+// Context
+import { AppAllContext } from "./use-context-app";
+
+const reducer = (action) => {
+    const { type, payload } = action;
+    switch (type) {
+        case "SET_REFRESH": {
+            return !payload;
+        }
+        case "SET_INDEX_CASE": {
+            return payload;
+        }
+        case "SET_SHOW_MODAL_OPEN": {
+            return true;
+        }
+        case "SET_SHOW_MODAL_CLOSE": {
+            return false;
+        }
+        case "SET_INDEX": {
+            return payload;
+        }
+        default:
+            return payload;
+    }
+};
+
 function App() {
-    const [isRefresh, setRefresh] = useState(false);
-    const refresh = () => setRefresh(!isRefresh);
+    const [isRefresh, setIsRefresh] = useState(false);
+    // const refresh = () => setRefresh(!isRefresh);
 
     const [indexCase, setIndexCase] = useState(null);
+
+    const [showModal, setShowModal] = useState(false);
 
     const { todos, loading } = useGetRequest(
         "http://localhost:3033/todos",
         isRefresh
     );
 
-    const [showModal, setShowModal] = useState(false);
+    const dispatchIsRefresh = ({ type, payload }) => {
+        const state = reducer({ type, payload });
+        setIsRefresh(state)
+    };
+
+    const dispatchIndexCase = ({ type, payload }) => {
+        const state = reducer({ type, payload });
+        setIndexCase(state)
+    };
+
+    const dispatchShowModal = ({ type, payload }) => {
+        const state = reducer({ type, payload });
+        setShowModal(state)
+    };
 
     return (
         <div className={styles.app}>
@@ -30,31 +71,33 @@ function App() {
                 <Route
                     path="/"
                     element={
-                        <MainPage
-                            isRefresh={isRefresh}
-                            refresh={refresh}
+                        <AppAllContext
+                            refresh={[isRefresh, dispatchIsRefresh]}
+                            index={[indexCase, dispatchIndexCase]}
                             todos={todos}
                             loading={loading}
-                            setIndexCase={setIndexCase}
-                            showModal={showModal}
-                            setShowModal={setShowModal}
-                        />
+                            showModal={[showModal, dispatchShowModal]}
+                        >
+                            <MainPage />
+                        </AppAllContext>
                     }
                 ></Route>
                 <Route
                     path="/case/:id"
                     element={
-                        <CasePage
+                        <AppAllContext
                             todos={todos}
                             loading={loading}
-                            refresh={refresh}
-                            indexCase={indexCase}
-                            showModal={showModal}
-                            setShowModal={setShowModal}
-                        />
+                            refresh={[isRefresh, dispatchIsRefresh]}
+                            index={[indexCase, dispatchIndexCase]}
+                            showModal={[showModal, dispatchShowModal]}
+                        >
+                            <CasePage />
+                        </AppAllContext>
                     }
                 ></Route>
                 <Route path="*" element={<NotFound />}></Route>
+                <Route path="/case/*" element={<NotFound />}></Route>
             </Routes>
         </div>
     );

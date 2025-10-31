@@ -4,8 +4,13 @@ import { Switch } from "../Switch/Switch";
 import { usePostRequest } from "../../hooks/useCRUD/use-request-post";
 import { usePutRequest } from "../../hooks/useCRUD/use-request-put";
 import { useState } from "react";
+import { use } from "react";
+import { RefreshContext, ShowModalContext } from "../../context";
 
-export const ModalCase = ({ refresh, setShowModal, data, typeRequest, casePageUrlId }) => {
+export const ModalCase = ({ data, typeRequest, casePageUrlId }) => {
+    const [isRefresh, dispatchRefresh] = use(RefreshContext);
+    const [showModal, dispatchShowModal] = use(ShowModalContext);
+
     const [title, setTitle] = useState(data.title);
     const [description, setDescription] = useState(data.description);
     const [dataCreate, setDataCreate] = useState(data.dateCreate);
@@ -13,7 +18,6 @@ export const ModalCase = ({ refresh, setShowModal, data, typeRequest, casePageUr
     const [completed, setCompleted] = useState(data.completed);
 
     const requestCRUD = () => {
-
         const dataModal = {
             title: title,
             description: description,
@@ -22,23 +26,24 @@ export const ModalCase = ({ refresh, setShowModal, data, typeRequest, casePageUr
             completed: completed,
         };
 
+
         if (typeRequest == "POST") {
             usePostRequest(
                 "http://localhost:3033/todos",
                 dataModal,
-                refresh
+                dispatchRefresh,
+                isRefresh
             );
         } else if (typeRequest == "PUT") {
             usePutRequest(
                 `http://localhost:3033/todos/${casePageUrlId}`,
                 dataModal,
-                refresh
-            )
+                dispatchRefresh,
+                isRefresh
+            );
         }
-        
 
-
-        setShowModal(false);
+        dispatchShowModal({ type: "SET_SHOW_MODAL_CLOSE", payload: false });
     };
 
     const states = [
@@ -59,11 +64,18 @@ export const ModalCase = ({ refresh, setShowModal, data, typeRequest, casePageUr
         <div className={styles["modal-wripe"]}>
             <div className={styles.modal}>
                 <div>
-                    <ButtonCRUD onClick={() => setShowModal(false)}>
+                    <ButtonCRUD
+                        onClick={() =>
+                            dispatchShowModal({
+                                type: "SET_SHOW_MODAL_CLOSE",
+                                payload: false,
+                            })
+                        }
+                    >
                         Закрыть
                     </ButtonCRUD>
                 </div>
-                {states.map(([state, setState], index) => {
+                {states.map(([state,    setState], index) => {
                     return (
                         <div className={styles.blockItem} key={index}>
                             <label>{labels[index]}</label>
@@ -82,9 +94,7 @@ export const ModalCase = ({ refresh, setShowModal, data, typeRequest, casePageUr
                     disabled={null}
                 />
                 <div>
-                    <ButtonCRUD onClick={requestCRUD}>
-                        Отправить
-                    </ButtonCRUD>
+                    <ButtonCRUD onClick={requestCRUD}>Отправить</ButtonCRUD>
                 </div>
             </div>
         </div>

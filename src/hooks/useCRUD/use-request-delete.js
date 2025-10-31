@@ -1,7 +1,7 @@
-export const useDeleteRequest = (url, refresh) => {
+export const useDeleteRequest = (url, dispatchRefresh, isRefresh) => {
     fetch(url, {
         method: "DELETE"
     })
         .then((rawData) => rawData.json())
-        .then((loaded) => refresh());
+        .then((loaded) => dispatchRefresh({type: "SET_REFRESH", payload: isRefresh}));
 };

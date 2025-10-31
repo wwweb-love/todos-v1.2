@@ -2,6 +2,7 @@ import styles from "./Switch.module.css";
 
 
 export const Switch = ({ completed, disabled, setCompleted }) => {
+  
   const handleChange = (e) => setCompleted(e.target.checked);
 
   return (

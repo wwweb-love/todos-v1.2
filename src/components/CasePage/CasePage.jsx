@@ -5,27 +5,34 @@ import { CasePageLayout } from "./CasePageLayout";
 import { useDeleteRequest } from "../../hooks/useCRUD/use-request-delete";
 import { NotFound } from "../NotFound/NotFound";
 import { useNavigate } from "react-router-dom";
+import {
+    LoadingContext,
+    TodosContext,
+    IndexCaseContext,
+    ShowModalContext,
+} from "../../context";
+import { use } from "react";
+import { RefreshContext } from "../../context";
 
-export const CasePage = ({
-    todos,
-    loading,
-    refresh,
-    indexCase,
-    showModal,
-    setShowModal,
-}) => {
+export const CasePage = () => {
+    const loading = use(LoadingContext);
+    const todos = use(TodosContext);
+    const [index, dispatchIndex] = use(IndexCaseContext);
+    const [showModal, dispatchShowModal] = use(ShowModalContext);
+    const [isRefresh, dispatchRefresh] = use(RefreshContext)
+
     const match = useMatch("/case/:id");
     const caseId = match.params.id || null;
     const navigate = useNavigate();
 
     const removeItemTodos = () => {
-        useDeleteRequest(`http://localhost:3033/todos/${caseId}`, refresh);
+        useDeleteRequest(`http://localhost:3033/todos/${caseId}`, dispatchRefresh, isRefresh);
         navigate("/");
         // navigate('/case', { replace: true });
     };
 
     const editCasePage = () => {
-        setShowModal(true);
+        dispatchShowModal({type: "SET_SHOW_MODAL_OPEN", payload: true});
     };
 
     if (loading)
@@ -34,14 +41,14 @@ export const CasePage = ({
                 <Loading />
             </div>
         );
-
-    if (!todos[indexCase]) {
+    
+    if (!todos[index]) {
         return <NotFound />;
     }
 
     if (caseId && !loading) {
         const { title, description, dataCreate, dataDeadline, completed } =
-            todos[indexCase];
+            todos[index];
 
         const data = {
             title: title,
@@ -63,8 +70,6 @@ export const CasePage = ({
                 editCasePage={editCasePage}
                 showModal={showModal}
                 data={data}
-                refresh={refresh}
-                setShowModal={setShowModal}
                 casePageUrlId={caseId}
             />
         );

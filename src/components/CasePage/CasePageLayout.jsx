@@ -29,13 +29,11 @@ export const CasePageLayout = ({
     editCasePage,
     showModal,
     data,
-    refresh,
-    setShowModal,
     casePageUrlId
 }) => {
     return (
         <div className={styles["case-page"]}>
-            {showModal && <ModalCase refresh={refresh} setShowModal={setShowModal} data={data} casePageUrlId={casePageUrlId} typeRequest={"PUT"} />}
+            {showModal && <ModalCase data={data} casePageUrlId={casePageUrlId} typeRequest={"PUT"} />}
             <div>
                 <ButtonNavigate onClick={() => navigate(-1)}>
                     Назад
