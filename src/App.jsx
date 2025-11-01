@@ -20,17 +20,11 @@ const reducer = (action) => {
         case "SET_REFRESH": {
             return !payload;
         }
-        case "SET_INDEX_CASE": {
-            return payload;
-        }
         case "SET_SHOW_MODAL_OPEN": {
             return true;
         }
         case "SET_SHOW_MODAL_CLOSE": {
             return false;
-        }
-        case "SET_INDEX": {
-            return payload;
         }
         default:
             return payload;
@@ -41,24 +35,15 @@ function App() {
     const [isRefresh, setIsRefresh] = useState(false);
     // const refresh = () => setRefresh(!isRefresh);
 
-    const [indexCase, setIndexCase] = useState(null);
+    // const [indexCase, setIndexCase] = useState(null);
 
     const [showModal, setShowModal] = useState(false);
-
-    const { todos, loading } = useGetRequest(
-        "http://localhost:3033/todos",
-        isRefresh
-    );
 
     const dispatchIsRefresh = ({ type, payload }) => {
         const state = reducer({ type, payload });
         setIsRefresh(state)
     };
 
-    const dispatchIndexCase = ({ type, payload }) => {
-        const state = reducer({ type, payload });
-        setIndexCase(state)
-    };
 
     const dispatchShowModal = ({ type, payload }) => {
         const state = reducer({ type, payload });
@@ -73,9 +58,6 @@ function App() {
                     element={
                         <AppAllContext
                             refresh={[isRefresh, dispatchIsRefresh]}
-                            index={[indexCase, dispatchIndexCase]}
-                            todos={todos}
-                            loading={loading}
                             showModal={[showModal, dispatchShowModal]}
                         >
                             <MainPage />
@@ -86,10 +68,7 @@ function App() {
                     path="/case/:id"
                     element={
                         <AppAllContext
-                            todos={todos}
-                            loading={loading}
                             refresh={[isRefresh, dispatchIsRefresh]}
-                            index={[indexCase, dispatchIndexCase]}
                             showModal={[showModal, dispatchShowModal]}
                         >
                             <CasePage />

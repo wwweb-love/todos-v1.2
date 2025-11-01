@@ -11,8 +11,6 @@ import { ShowModalContext } from "../../context";
 export const HeadCaseList = () => {
     const [ showModal, dispatchShowModal ] = use(ShowModalContext)
 
-
-
     let data = {
         title: "",
         description: "",
